@@ -3,6 +3,22 @@ import React, { useState } from "react";
 
 function Table(props) {
   const [formData] = useState(props.jsonData);
+  const [isDarkMode]=useState(props.isDarkMode);
+  // const [setIsDarkMode] = useState(false);
+
+  // const toggleTheme = (value) => {
+  //   const newTheme = !value;
+  //   setIsDarkMode(newTheme);
+  //   document.body.classList.toggle("dark-theme", newTheme);
+  //   localStorage.setItem("darkTheme", newTheme);
+  // };
+
+  // useEffect(() => {
+  //   const savedTheme = localStorage.getItem("darkTheme") === "true";
+  //   setIsDarkMode(savedTheme);
+  //   document.body.classList.toggle("dark-theme", savedTheme);
+  // }, []);
+
   //   const [inputField, setInputField] = useState({});
   //   const [total, setTotal] = useState({});
 
@@ -206,21 +222,36 @@ function Table(props) {
     }
   };
 
+  const borderRadiusStyle = { borderRadius: 2 }
+
+
   return (
     <>
+    <div className={`p-3 border ${isDarkMode ? "border-light bg-secondary text-light" : "border-dark bg-light text-dark"}`}>
+    <div className="d-flex flex-row-reverse mb-2">
+        <div className="App d-flex flex-row">
+      {/* <h3 className="p-3">{isDarkMode ? "Dark Mode" : "Light Mode"}</h3> */}
+      {/* <ToggleButton className="p-3"
+        value={isDarkMode}
+        thumbStyle={{ borderRadius: 2 }}
+        trackStyle={{ borderRadius: 2 }}
+        onToggle={() => toggleTheme(isDarkMode)}
+      /> */}
+    </div>
+        </div>
       {formData.map((heading, index) => (
-        <div className="card mb-2" key={index}>
-          <div className="card-header">
-            <strong>{heading.DocumentName}</strong>
+        <div className={`card mb-2 ${isDarkMode ? "bg-dark text-light" : "bg-white text-dark"}`} key={index}>
+          <div className={`card-header ${isDarkMode ? "bg-success text-white" : "bg-primary text-white"} fs-3`}>
+          <strong>{heading.DocumentName}</strong>
           </div>
           <div className="card-body">
-            <div className="d-flex align-items-center col-sm-12 mb-3">
-              <div className="col-sm-4">
+            <div className="d-flex align-items-center col-sm-12 mb-3 fs-4">
+              <div className="col-sm-3 me-2">
                 <label>
                   <strong>No. of Fiscal Years</strong>
                 </label>
               </div>
-              <div className="col-sm-4">
+              <div className="col-sm-3 me-2">
                 {/* <Select
                 options={SMEcolumns}
                 onChange={(e) => handleColChange(e.value)}
@@ -230,18 +261,20 @@ function Table(props) {
             </div>
             <hr />
             <div className="overflow-auto">
-              {heading.AccountHeadings.map((x, index) => (
-                <div key={index} className="d-flex align-items-center mb-2">
-                  <div className="col-sm-4">
-                    {x.IsStrong === true ? (
-                      <strong>{x.Title}</strong>
-                    ) : (
-                      <span>{x.Title}</span>
-                    )}
-                  </div>
-
+            {heading.AccountHeadings.map((x, index) => (
+              <div
+                key={index}
+                className={`d-flex align-items-center ${x.IsStrong ? (isDarkMode ? "bg-light text-dark p-1 rounded-2 mb-1 mt-1" : "bg-dark text-white p-1 rounded-2 mb-1 mt-1") : ""}`}
+                >
+                <div className="col-sm-4">
+                  {x.IsStrong ? (
+                    <strong className={`${isDarkMode ? "text-dark" : "text-white"}`}>{x.Title}</strong>
+                  ) : (
+                    <span>{x.Title}</span>
+                  )}
+                </div>
                   {Array.from({ length: props.colNum }, (_, colIndex) => (
-                    <div key={colIndex} className="col-sm-2 mr-2">
+                    <div key={colIndex} className="col-sm-2 ">
                       {x.Type === "Input" ? (
                         <input
                           type="text"
@@ -262,7 +295,8 @@ function Table(props) {
                         <>
                           <input
                             type="text"
-                            className="form-control"
+                            className="form-control "
+                            style={{ backgroundColor: '#e9ecef', cursor: 'not-allowed' }}
                             value={calculateFormula(x.Formula, colIndex)}
                             id={`${x.Code}-${colIndex}`}
                             readOnly
@@ -273,6 +307,7 @@ function Table(props) {
                           <input
                             type="text"
                             className="form-control"
+                            style={{ backgroundColor: '#e9ecef', cursor: 'not-allowed' }}
                             value={
                               props.total?.[x.Code]?.[colIndex]
                               // || inputField?.[x.Code]?.[colIndex]
@@ -316,16 +351,19 @@ function Table(props) {
                 >
                   Save
                 </button> */}
-            <button
-              type="button"
-              className="btn btn-sm btn-success"
-              onClick={() => tripleCalculateButton()}
-            >
-              Calculate
-            </button>
+            <div className="text-center p-4 ">
+              <button
+                type="button"
+                className={`btn btn-block ${isDarkMode ? "btn-primary" : "btn-success"}`}
+                onClick={() => tripleCalculateButton()}
+              >
+                Calculate
+              </button>
+            </div>
           </div>
         </div>
       ))}
+      </div>
     </>
   );
 }
