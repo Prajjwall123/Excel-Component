@@ -1,6 +1,6 @@
 {
   "name": "excel-component",
-  "version": "1.0.2",
+  "version": "1.0.5",
   "description": "react excel sheet component",
   "main": "dist/index.js",
   "scripts": {
@@ -23,7 +23,8 @@
   "homepage": "https://github.com/Prajjwall123/Excel-Component#readme",
   "dependencies": {
     "react": "^18.3.1",
-    "react-router-dom": "^6.27.0"
+    "react-router-dom": "^6.27.0",
+    "react-toggle-button": "^2.2.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.25.9",

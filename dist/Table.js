@@ -27,6 +27,24 @@ function Table(props) {
   var _useState = (0, _react.useState)(props.jsonData),
     _useState2 = _slicedToArray(_useState, 1),
     formData = _useState2[0];
+  var _useState3 = (0, _react.useState)(props.isDarkMode),
+    _useState4 = _slicedToArray(_useState3, 1),
+    isDarkMode = _useState4[0];
+  // const [setIsDarkMode] = useState(false);
+
+  // const toggleTheme = (value) => {
+  //   const newTheme = !value;
+  //   setIsDarkMode(newTheme);
+  //   document.body.classList.toggle("dark-theme", newTheme);
+  //   localStorage.setItem("darkTheme", newTheme);
+  // };
+
+  // useEffect(() => {
+  //   const savedTheme = localStorage.getItem("darkTheme") === "true";
+  //   setIsDarkMode(savedTheme);
+  //   document.body.classList.toggle("dark-theme", savedTheme);
+  // }, []);
+
   //   const [inputField, setInputField] = useState({});
   //   const [total, setTotal] = useState({});
 
@@ -343,35 +361,46 @@ function Table(props) {
       return _ref8.apply(this, arguments);
     };
   }();
-  return /*#__PURE__*/_react["default"].createElement(_react["default"].Fragment, null, formData.map(function (heading, index) {
+  var borderRadiusStyle = {
+    borderRadius: 2
+  };
+  return /*#__PURE__*/_react["default"].createElement(_react["default"].Fragment, null, /*#__PURE__*/_react["default"].createElement("div", {
+    className: "p-3 border ".concat(isDarkMode ? "border-light bg-secondary text-light" : "border-dark bg-light text-dark")
+  }, /*#__PURE__*/_react["default"].createElement("div", {
+    className: "d-flex flex-row-reverse mb-2"
+  }, /*#__PURE__*/_react["default"].createElement("div", {
+    className: "App d-flex flex-row"
+  })), formData.map(function (heading, index) {
     return /*#__PURE__*/_react["default"].createElement("div", {
-      className: "card mb-2",
+      className: "card mb-2 ".concat(isDarkMode ? "bg-dark text-light" : "bg-white text-dark"),
       key: index
     }, /*#__PURE__*/_react["default"].createElement("div", {
-      className: "card-header"
+      className: "card-header ".concat(isDarkMode ? "bg-success text-white" : "bg-primary text-white", " fs-3")
     }, /*#__PURE__*/_react["default"].createElement("strong", null, heading.DocumentName)), /*#__PURE__*/_react["default"].createElement("div", {
       className: "card-body"
     }, /*#__PURE__*/_react["default"].createElement("div", {
-      className: "d-flex align-items-center col-sm-12 mb-3"
+      className: "d-flex align-items-center col-sm-12 mb-3 fs-4"
     }, /*#__PURE__*/_react["default"].createElement("div", {
-      className: "col-sm-4"
+      className: "col-sm-3 me-2"
     }, /*#__PURE__*/_react["default"].createElement("label", null, /*#__PURE__*/_react["default"].createElement("strong", null, "No. of Fiscal Years"))), /*#__PURE__*/_react["default"].createElement("div", {
-      className: "col-sm-4"
+      className: "col-sm-3 me-2"
     })), /*#__PURE__*/_react["default"].createElement("hr", null), /*#__PURE__*/_react["default"].createElement("div", {
       className: "overflow-auto"
     }, heading.AccountHeadings.map(function (x, index) {
       return /*#__PURE__*/_react["default"].createElement("div", {
         key: index,
-        className: "d-flex align-items-center mb-2"
+        className: "d-flex align-items-center ".concat(x.IsStrong ? isDarkMode ? "bg-light text-dark p-1 rounded-2 mb-1 mt-1" : "bg-dark text-white p-1 rounded-2 mb-1 mt-1" : "")
       }, /*#__PURE__*/_react["default"].createElement("div", {
         className: "col-sm-4"
-      }, x.IsStrong === true ? /*#__PURE__*/_react["default"].createElement("strong", null, x.Title) : /*#__PURE__*/_react["default"].createElement("span", null, x.Title)), Array.from({
+      }, x.IsStrong ? /*#__PURE__*/_react["default"].createElement("strong", {
+        className: "".concat(isDarkMode ? "text-dark" : "text-white")
+      }, x.Title) : /*#__PURE__*/_react["default"].createElement("span", null, x.Title)), Array.from({
         length: props.colNum
       }, function (_, colIndex) {
         var _props$total;
         return /*#__PURE__*/_react["default"].createElement("div", {
           key: colIndex,
-          className: "col-sm-2 mr-2"
+          className: "col-sm-2 "
         }, x.Type === "Input" ? /*#__PURE__*/_react["default"].createElement("input", {
           type: "text",
           className: "form-control",
@@ -386,13 +415,21 @@ function Table(props) {
           } // Update state with column index
         }) : x.Type === "Formula" ? /*#__PURE__*/_react["default"].createElement(_react["default"].Fragment, null, /*#__PURE__*/_react["default"].createElement("input", {
           type: "text",
-          className: "form-control",
+          className: "form-control ",
+          style: {
+            backgroundColor: '#e9ecef',
+            cursor: 'not-allowed'
+          },
           value: calculateFormula(x.Formula, colIndex),
           id: "".concat(x.Code, "-").concat(colIndex),
           readOnly: true
         })) : x.Type === "TotalWithFormula" ? /*#__PURE__*/_react["default"].createElement(_react["default"].Fragment, null, /*#__PURE__*/_react["default"].createElement("input", {
           type: "text",
           className: "form-control",
+          style: {
+            backgroundColor: '#e9ecef',
+            cursor: 'not-allowed'
+          },
           value: (_props$total = props.total) === null || _props$total === void 0 || (_props$total = _props$total[x.Code]) === null || _props$total === void 0 ? void 0 : _props$total[colIndex] // || inputField?.[x.Code]?.[colIndex]
           ,
           id: "".concat(x.Code, "-").concat(colIndex),
@@ -406,13 +443,15 @@ function Table(props) {
           value: props.inputField[x.Code] && props.inputField[x.Code][colIndex] || ""
         }) : "");
       }));
-    })), /*#__PURE__*/_react["default"].createElement("button", {
+    })), /*#__PURE__*/_react["default"].createElement("div", {
+      className: "text-center p-4 "
+    }, /*#__PURE__*/_react["default"].createElement("button", {
       type: "button",
-      className: "btn btn-sm btn-success",
+      className: "btn btn-block ".concat(isDarkMode ? "btn-primary" : "btn-success"),
       onClick: function onClick() {
         return tripleCalculateButton();
       }
-    }, "Calculate")));
-  }));
+    }, "Calculate"))));
+  })));
 }
 var _default = exports["default"] = Table;
