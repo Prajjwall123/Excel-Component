@@ -1,26 +1,29 @@
 import "bootstrap/dist/css/bootstrap.css";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import ToggleButton from 'react-toggle-button';
 
 function Table(props) {
-  const [formData] = useState(props.jsonData);
-  const [isDarkMode]=useState(props.isDarkMode);
+  const [formData, setFormData] = useState(props.jsonData);
+  const { isToggleButton } = props;
+  // const [isDarkMode]=useState(props.isDarkMode);
+  const [isDarkMode, setIsDarkMode]=useState(false);
   // const [setIsDarkMode] = useState(false);
 
-  // const toggleTheme = (value) => {
-  //   const newTheme = !value;
-  //   setIsDarkMode(newTheme);
-  //   document.body.classList.toggle("dark-theme", newTheme);
-  //   localStorage.setItem("darkTheme", newTheme);
-  // };
+  const toggleTheme = (value) => {
+    const newTheme = !value;
+    setIsDarkMode(newTheme);
+    document.body.classList.toggle("dark-theme", newTheme);
+    localStorage.setItem("darkTheme", newTheme);
+  };
 
-  // useEffect(() => {
-  //   const savedTheme = localStorage.getItem("darkTheme") === "true";
-  //   setIsDarkMode(savedTheme);
-  //   document.body.classList.toggle("dark-theme", savedTheme);
-  // }, []);
+  useEffect(() => {
+    const savedTheme = localStorage.getItem("darkTheme") === "true";
+    setIsDarkMode(savedTheme);
+    document.body.classList.toggle("dark-theme", savedTheme);
+  }, []);
 
-  //   const [inputField, setInputField] = useState({});
-  //   const [total, setTotal] = useState({});
+    const [inputField, setInputField] = useState({});
+    const [total, setTotal] = useState({});
 
   const handleInputChange = (code, colIndex, value) => {
     props?.setInputField((prevState) => ({
@@ -230,14 +233,17 @@ function Table(props) {
     <div className={`p-3 border ${isDarkMode ? "border-light bg-secondary text-light" : "border-dark bg-light text-dark"}`}>
     <div className="d-flex flex-row-reverse mb-2">
         <div className="App d-flex flex-row">
-      {/* <h3 className="p-3">{isDarkMode ? "Dark Mode" : "Light Mode"}</h3> */}
-      {/* <ToggleButton className="p-3"
-        value={isDarkMode}
-        thumbStyle={{ borderRadius: 2 }}
-        trackStyle={{ borderRadius: 2 }}
-        onToggle={() => toggleTheme(isDarkMode)}
-      /> */}
-    </div>
+            {isToggleButton && (
+                <ToggleButton
+                    className="p-3"
+                    value={isDarkMode}
+                    thumbStyle={{ borderRadius: 2 }}
+                    trackStyle={{ borderRadius: 2 }}
+                    onToggle={() => toggleTheme(isDarkMode)}
+                />
+            )}
+        </div>
+
         </div>
       {formData.map((heading, index) => (
         <div className={`card mb-2 ${isDarkMode ? "bg-dark text-light" : "bg-white text-dark"}`} key={index}>
